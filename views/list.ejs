@@ -1,52 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>To Do List</title>
-    <link rel="stylesheet" href="/css/styles.css">
-</head>
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
 
-<body>
-
-    <!-- 
-    <% if(kindOfDay==="Saturday" || kindOfDay==="Sunday" ){ %>
-        <h1 style="color: purple;">
-            <%= kindOfDay %>
-        </h1>
-        <% } else { %>
-            <h1>
-                <%= kindOfDay %>
-            </h1>
-            <% } %> -->
-
+  <body>
     <div class="box" id="heading">
-        <h1>
-            <%= kindOfDay %>
-        </h1>
+      <h1><%= kindOfList %></h1>
     </div>
 
     <div class="box">
-        <% itemArray.forEach(element=> { %>
-            <div class="item">
-                <input type="checkbox" name="" id="">
-                <p>
-                    <%= element %>
-                </p>
-            </div>
-            <% }); %>
-
-             <form class="item" action="/" method="post">
-
-                <input type="text" name="newItem" placeholder="New Item">
-                <button type="submit">+</button>
-                
-            </form>
-
+      <% itemArray.forEach(element=> { %>
+      <div class="item">
+        <input type="checkbox" name="" id="" />
+        <p><%= element %></p>
+      </div>
+      <% }); %>
+      <!-- ? I have to figure out, how to update the action parameter dynamically. (It was not working properly when I set action='/')-->
+      <!-- = I have removed the action url and its working fine. -->
+      <!-- = I think whoever called this form, the respose is send back to it automatically -->
+      <form class="item" action="" method="post">
+        <input type="text" name="newItem" placeholder="New Item" />
+        <button type="submit">+</button>
+      </form>
     </div>
-
-</body>
-
+  </body>
 </html>

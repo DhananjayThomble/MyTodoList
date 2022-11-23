@@ -1,5 +1,5 @@
-const express = require('express');
-const bodyParser = require('body-parser');
+const express = require("express");
+const bodyParser = require("body-parser");
 
 const port = 3000;
 const app = express();
@@ -16,31 +16,38 @@ app.set("view engine", "ejs");
 
 // array, empty array = [];
 let items = ["Buy Food", "Cook Food", "Eat Food"];
+let workItems = [];
 
-app.get("/", function(req, res){
+app.get("/", function (req, res) {
+  let today = new Date();
+  let dateOptions = {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+  };
+  let day = today.toLocaleString("en-IN", dateOptions);
 
-    let today = new Date();
-    let dateOptions = {
-        weekday: "long",
-        day: "numeric",
-        month: "long"
-    };
-    let day = today.toLocaleString("en-IN", dateOptions);
-
-    res.render("list", {kindOfDay : day , itemArray: items});
-
+  res.render("list", { kindOfList: "Default List", itemArray: items });
 });
 
-app.post("/",function(req, res){
+app.post("/", function (req, res) {
+  //takes input from frontend and store it in the array
+  items.push(req.body.newItem);
 
-    //takes input from frontend and store it in the array
-    items.push(req.body.newItem);
-    
-    //displays the latest array of todo list
-    res.redirect("/");
+  //displays the latest array of todo list
+  res.redirect("/");
 });
 
+app.get("/work", function (req, res) {
+    res.render("list", { kindOfList: "Work List", itemArray : workItems});
+});
 
-app.listen(port, function(){
-    console.log(`Server started at ${port}`);
+app.post("/work", function(req, res){
+    workItems.push(req.body.newItem);
+    // console.log("work array updated");
+    res.redirect("/work");
+});
+
+app.listen(port, function () {
+  console.log(`Server started at ${port}`);
 });
