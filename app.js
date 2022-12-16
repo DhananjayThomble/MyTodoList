@@ -1,5 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const myDate = require("./dates");
+const mongoose = require("mongoose"); // for database
 
 const port = 3000;
 const app = express();
@@ -13,39 +15,91 @@ app.use(express.static("public"));
 // to render ejs webpage
 // ejs- embedded javascript
 app.set("view engine", "ejs");
+let itemName = "";
+/* ---------------------------------- Database ---------------------------------- */
+mongoose.set("strictQuery", false);
+async function main() {
+  await mongoose.connect(
+    "mongodb+srv://dhananjayT:dhananjayT9727@cluster0.rq0ojee.mongodb.net/?retryWrites=true&w=majority"
+  );
+}
+
+main().catch((err) => console.log(err));
+// check if connection is successful
+const db = mongoose.connection;
+db.on("error", console.error.bind(console, "connection error:"));
+db.once("open", function () {
+  console.log("Connected to database");
+});
+
+// Creating Schema for todo list
+const todoSchema = new mongoose.Schema({
+  item: String,
+});
+
+// Creating Model for todo list : A model is a class with which we construct documents.
+const Todo = mongoose.model("todolist", todoSchema);
+
+// const list = new Todo({
+//   item: "Welcome to your todolist",
+// });
+
+// const list2 = new Todo({
+//   item: "Hit the + button to add a new item",
+// });
+
+// const defaultItems = [list, list2];
+
+// // save the default items to database
+// Todo.insertMany(defaultItems, function (err) {
+//   if (err) {
+//     console.log(err);
+//   } else {
+//     console.log("Successfully saved default items to database");
+//   }
+// });
+
+/* ---------------------------------- Database ---------------------------------- */
 
 // array, empty array = [];
-let items = ["Buy Food", "Cook Food", "Eat Food"];
-let workItems = [];
+const items = ["Buy Food", "Cook Food", "Eat Food"];
+const workItems = [];
 
 app.get("/", function (req, res) {
-  let today = new Date();
-  let dateOptions = {
-    weekday: "long",
-    day: "numeric",
-    month: "long",
-  };
-  let day = today.toLocaleString("en-IN", dateOptions);
+  const today = myDate.day();
+  // console.log(today);
+  // gettting data from database
+  let itemArray = [];
 
-  res.render("list", { kindOfList: "Default List", itemArray: items });
+  Todo.find({}, function (err, results) {
+    if (err) {
+      console.log(err);
+      res.send("Error in fetching data from database");
+    } else {
+      itemArray = results.map((result) => result.item);
+
+      res.render("list", { kindOfList: today, itemArray: itemArray });
+    }
+  });
 });
 
 app.post("/", function (req, res) {
   //takes input from frontend and store it in the array
-  items.push(req.body.newItem);
+  // items.push(req.body.newItem);
+  itemName = req.body.newItem;
 
   //displays the latest array of todo list
   res.redirect("/");
 });
 
 app.get("/work", function (req, res) {
-    res.render("list", { kindOfList: "Work List", itemArray : workItems});
+  res.render("list", { kindOfList: "Work List", itemArray: workItems });
 });
 
-app.post("/work", function(req, res){
-    workItems.push(req.body.newItem);
-    // console.log("work array updated");
-    res.redirect("/work");
+app.post("/work", function (req, res) {
+  workItems.push(req.body.newItem);
+  // console.log("work array updated");
+  res.redirect("/work");
 });
 
 app.listen(port, function () {
