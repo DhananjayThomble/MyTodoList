@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const myDate = require("./dates");
@@ -17,11 +18,10 @@ app.use(express.static("public"));
 app.set("view engine", "ejs");
 let itemName = "";
 /* ---------------------------------- Database ---------------------------------- */
+const dbUrl = process.env.DB_URL; // get the url from .env file
 mongoose.set("strictQuery", false);
 async function main() {
-  await mongoose.connect(
-    "mongodb+srv://dhananjayT:dhananjayT9727@cluster0.rq0ojee.mongodb.net/?retryWrites=true&w=majority"
-  );
+  await mongoose.connect(dbUrl);
 }
 
 main().catch((err) => console.log(err));
