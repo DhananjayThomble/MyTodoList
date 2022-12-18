@@ -9,13 +9,14 @@ jobs:
       - name: Deploy NodeJS app to my EC2
         uses: appleboy/ssh-action@v0.1.2
         with:
-          host: ${{secrets.HOST}}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.KEY }}
-          port: ${{secrets.PORT}}
+          host: ${{secrets.IP}}
+          username: ${{ secrets.HOST }}
+          password: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.PORT }}
           script: |
-            cd /home/ubuntu
-            git clone https://github.com/DhananjayThomble/MyTodoList
-            cd MyTodoList
-            npm install # install dependencies 
+            cd /home/dhananjay/MyTodoList
+            git pull
+            npm install
+            pm2 restart app.js --time
+
             
