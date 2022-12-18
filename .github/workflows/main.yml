@@ -17,6 +17,6 @@ jobs:
             cd /home/dhananjay/MyTodoList
             git pull
             npm install
-            pm2 restart app.js
+            pm2 restart app.js --time
 
             
