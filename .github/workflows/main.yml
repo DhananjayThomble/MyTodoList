@@ -9,9 +9,9 @@ jobs:
       - name: Deploy NodeJS app to my EC2
         uses: appleboy/ssh-action@v0.1.2
         with:
-          host: ${{secrets.HOST}}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.KEY }}
-          port: ${{secrets.PORT}}
-          script: mkdir tp2
+          host: ${{secrets.IP}}
+          username: ${{ secrets.HOST }}
+          password: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.PORT }}
+          script: whoami
             
