@@ -116,9 +116,14 @@ app.post("/delete", (req, res) => {
   });
 });
 
-app.get("/work", function (req, res) {
-  res.render("list", { kindOfList: "Work List", itemArray: workItems });
-});
+// app.get("/work", function (req, res) {
+//   res.render("list", { kindOfList: "Work List", itemArray: workItems });
+// });
+
+// auto create route and provide list category feature to the user
+app.get("/:category", (req, res)=>{
+  console.log(req.params.category);
+}); 
 
 app.post("/work", function (req, res) {
   workItems.push(req.body.newItem);
