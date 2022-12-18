@@ -13,9 +13,5 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
           port: ${{secrets.PORT}}
-          script: |
-            cd /home/ubuntu
-            git clone https://github.com/DhananjayThomble/MyTodoList
-            cd MyTodoList
-            npm install # install dependencies 
+          script: mkdir tp2
             
