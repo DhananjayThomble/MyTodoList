@@ -40,24 +40,25 @@ const todoSchema = new mongoose.Schema({
 // Creating Model for todo list : A model is a class with which we construct documents.
 const Todo = mongoose.model("todolist", todoSchema);
 
-// const list = new Todo({
-//   item: "Welcome to your todolist",
-// });
+function insertDefaultItems() {
+  const list1 = new Todo({
+    item: "Welcome to your todolist",
+  });
 
-// const list2 = new Todo({
-//   item: "Hit the + button to add a new item",
-// });
+  const list2 = new Todo({
+    item: "Hit the + button to add a new item",
+  });
 
-// const defaultItems = [list, list2];
+  const defaultItems = [list1, list2];
 
-// // save the default items to database
-// Todo.insertMany(defaultItems, function (err) {
-//   if (err) {
-//     console.log(err);
-//   } else {
-//     console.log("Successfully saved default items to database");
-//   }
-// });
+  Todo.insertMany(defaultItems, function (err) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("Successfully saved default items to database");
+    }
+  });
+}
 
 /* ---------------------------------- Database ---------------------------------- */
 
@@ -76,8 +77,14 @@ app.get("/", function (req, res) {
       console.log(err);
       res.send("Error in fetching data from database");
     } else {
-      itemArray = results.map((result) => result.item);
+      // data is fetched from database
+      if (results.length === 0) {
+        insertDefaultItems();
+        res.redirect("/");
+        return;
+      }
 
+      itemArray = results.map((result) => result);
       res.render("list", { kindOfList: today, itemArray: itemArray });
     }
   });
@@ -87,9 +94,26 @@ app.post("/", function (req, res) {
   //takes input from frontend and store it in the array
   // items.push(req.body.newItem);
   itemName = req.body.newItem;
+  // saving data to database
+  const item = new Todo({
+    item: itemName,
+  });
 
-  //displays the latest array of todo list
+  item.save();
+
+  //displays the updated todo list
   res.redirect("/");
+});
+
+// to delete list
+app.post("/delete", (req, res) => {
+  const deletedItemId = req.body.itemId;
+
+  Todo.deleteOne({ _id: deletedItemId }, (err) => {
+    if (err) console.error(err);
+    // else console.log("deleted!");
+    res.redirect("/");
+  });
 });
 
 app.get("/work", function (req, res) {
