@@ -122,7 +122,7 @@ app.post("/delete", (req, res) => {
 
 // auto create route and provide list category feature to the user
 app.get("/:category", (req, res)=>{
-  console.log(req.params.category);
+  // console.log(req.params.category);
 }); 
 
 app.post("/work", function (req, res) {

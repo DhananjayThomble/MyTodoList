@@ -9,3 +9,4 @@ installing mongoose
 # version 1.2.0
 - 18-12-22
 - adding github actions for auto deployment
+- pipeline working perfectly
