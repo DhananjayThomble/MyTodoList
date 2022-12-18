@@ -14,8 +14,8 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
           script: |
-            git clone https://github.com/DhananjayThomble/MyTodoList
-            cd MyTodoList
-            npm install  
+            git pull
+            node install
+            pm2 start app.js
 
             
