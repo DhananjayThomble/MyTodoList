@@ -1,6 +1,6 @@
 {
   "name": "todolist-v1",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "Todo version 1",
   "main": "app.js",
   "scripts": {

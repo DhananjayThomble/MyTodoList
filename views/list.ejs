@@ -6,16 +6,14 @@
 </div>
 
 <div class="box">
-  <% itemArray.forEach(element=> { %>
-
   <form action="/delete" method="post">
+  <% itemArray.forEach(element=> { %>
     <div class="item">
       <input type="checkbox" name="itemId" id="" value="<%= element._id %>" onchange="this.form.submit()"/>
       <p><%= element.item %></p>
     </div>
-  </form>
-
   <% }); %>
+  </form>
   <!-- ? I have to figure out, how to update the action parameter dynamically. (It was not working properly when I set action='/')-->
   <!-- = I have removed the action url and its working fine. -->
   <!-- = I think whoever called this form, the respose is send back to it automatically -->

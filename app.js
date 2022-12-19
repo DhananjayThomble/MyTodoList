@@ -37,8 +37,15 @@ const todoSchema = new mongoose.Schema({
   item: String,
 });
 
+const listCategorySchema = new mongoose.Schema({
+  listCategory: String,
+  items: [todoSchema],
+});
+
 // Creating Model for todo list : A model is a class with which we construct documents.
 const Todo = mongoose.model("todolist", todoSchema);
+
+const ListCategory = mongoose.model("todoListCategory", listCategorySchema);
 
 function insertDefaultItems() {
   const list1 = new Todo({
@@ -121,9 +128,31 @@ app.post("/delete", (req, res) => {
 // });
 
 // auto create route and provide list category feature to the user
-app.get("/:category", (req, res)=>{
+app.get("/:listCategory", (req, res) => {
   // console.log(req.params.category);
-}); 
+  let itemArray = [];
+  const listCategory = req.params.listCategory;
+
+  // check whether the list category exists or not
+  ListCategory.findOne({ listCategory: listCategory }, (err, results) => {
+
+    if (results) {
+      // if category is found in collection
+      console.log("list already exist");
+    }
+    else {
+      // category not exist yet
+      const list = new ListCategory({
+        listCategory: listCategory,
+        items: [],
+      });
+
+      list.save();
+    }
+  });
+
+  res.render("list", { kindOfList: listCategory, itemArray: itemArray });
+});
 
 app.post("/work", function (req, res) {
   workItems.push(req.body.newItem);
