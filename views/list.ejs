@@ -13,11 +13,12 @@
       <p><%= element.item %></p>
     </div>
   <% }); %>
+    <input type="hidden" name="listName" value="<%= kindOfList %>" >
   </form>
   <!-- ? I have to figure out, how to update the action parameter dynamically. (It was not working properly when I set action='/')-->
   <!-- = I have removed the action url and its working fine. -->
   <!-- = I think whoever called this form, the respose is send back to it automatically -->
-  <form class="item" action="" method="post">
+  <form class="item" action="/" method="post">
     <input type="text" name="newItem" placeholder="New Item" />
     <button type="submit">+</button>
   </form>
