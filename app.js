@@ -3,6 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const myDate = require("./dates");
 const mongoose = require("mongoose"); // for database
+const _ = require("lodash/string"); // for string manipulation
 
 const port = 3001;
 const app = express();
@@ -156,7 +157,7 @@ app.post("/delete", (req, res) => {
 app.get("/:listCategory", (req, res) => {
   // console.log(req.params.category);
   let itemArray = [];
-  const listCategory = req.params.listCategory;
+  const listCategory = _.capitalize(req.params.listCategory); // capitalize the first letter of the list category
   listName = listCategory;
   // check whether the list category exists or not
   ListCategory.findOne({ listCategory: listCategory }, (err, results) => {
